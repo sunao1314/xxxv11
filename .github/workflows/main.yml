@@ -11,22 +11,20 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v4
 
-      # 💡 核心修复：不用第三方插件，直接用 Linux 原生命令秒装 Theos 依赖
       - name: Setup iOS SDK and Theos
         run: |
           sudo apt-get update
           sudo apt-get install -y perl clang make git rsync curl
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           
-          # 下载最新的 iOS 16.5 纯血无根精简版 SDK（确保无根环境下完美编译）
+          # 💡 黄金级修复：切换为可以直接裸下解压的纯净版 iOS 14.5 SDK（对 iOS 16 无根完全通用且包体极小）
           mkdir -p $HOME/theos/sdks
-          curl -LO https://github.com/theos/sdks/raw/master/iPhoneOS16.5.sdk.tar.xz
-          tar -xf iPhoneOS16.5.sdk.tar.xz -C $HOME/theos/sdks
-          rm iPhoneOS16.5.sdk.tar.xz
+          curl -LO https://github.com/xybp888/iOS-SDKs/raw/master/iPhoneOS14.5.sdk.tar.xz
+          tar -xf iPhoneOS14.5.sdk.tar.xz -C $HOME/theos/sdks
+          rm iPhoneOS14.5.sdk.tar.xz
 
       - name: Compile and Package
         run: |
-          # 声明环境变量，告诉 make 去哪里找底座
           export THEOS=$HOME/theos
           make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
         
