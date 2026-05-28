@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Filter</key>
+	<dict>
+		<key>Bundles</key>
+		<array>
+			<string>com.apple.UIKit</string>
+		</array>
+	</dict>
+	<key>PreferenceBundle</key>
+	<dict>
+		<key>bundle</key>
+		<string>AltList</string>
+		<key>isController</key>
+		<true/>
+		<key>label</key>
+		<string>云端注入管理器 v11.0</string>
+		<key>ALSettingsPath</key>
+		<string>/var/jb/var/mobile/Library/Preferences/com.yourname.universalhijack.plist</string>
+		<key>ALSettingsKeyPrefix</key>
+		<string>enabled-</string>
+		<key>ALChangeNotification</key>
+		<string>com.yourname.universalhijack.settingschanged</string>
+	</dict>
+</dict>
+</plist>
