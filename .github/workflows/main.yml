@@ -11,17 +11,26 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v4
 
+      # 💡 极其稳妥的官方 Git 通道方案：绝不触发 299k 拦截
       - name: Setup iOS SDK and Theos
         run: |
           sudo apt-get update
           sudo apt-get install -y perl clang make git rsync curl
+          
+          # 1. 克隆官方 Theos 环境
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           
-          # 💡 黄金级修复：切换为可以直接裸下解压的纯净版 iOS 14.5 SDK（对 iOS 16 无根完全通用且包体极小）
+          # 2. 创建 SDK 存放目录
           mkdir -p $HOME/theos/sdks
-          curl -LO https://github.com/xybp888/iOS-SDKs/raw/master/iPhoneOS14.5.sdk.tar.xz
-          tar -xf iPhoneOS14.5.sdk.tar.xz -C $HOME/theos/sdks
-          rm iPhoneOS14.5.sdk.tar.xz
+          
+          # 3. 放弃容易被拦截的 curl 裸连，直接用 git 精简克隆官方开源 SDK 库
+          git clone --depth=1 https://github.com/theos/sdks.git $HOME/official_sdks
+          
+          # 4. 把解压好的正统 iOS 14.5 SDK 移动到 Theos 的指定目录下
+          cp -r $HOME/official_sdks/iPhoneOS14.5.sdk $HOME/theos/sdks/
+          
+          # 5. 清理临时多余的克隆文件，防止占用系统空间
+          rm -rf $HOME/official_sdks
 
       - name: Compile and Package
         run: |
