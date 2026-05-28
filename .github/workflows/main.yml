@@ -14,18 +14,20 @@ jobs:
       - name: Setup iOS Toolchain, SDK and Theos
         run: |
           sudo apt-get update
-          sudo apt-get install -y perl clang make git rsync curl xz-utils
+          sudo apt-get install -y perl clang make git rsync curl
           
           # 1. 克隆官方 Theos 环境
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           
-          # 2. 【绝对保险】下载官方指定、对 Ubuntu 24 兼容性最好的跨平台编译器
+          # 2. 【100% 稳妥修复】放弃容易 404 的 Release 页面，直接用 Git 协议拉取官方 Linux 编译器
           mkdir -p $HOME/theos/toolchain/linux/iphone
-          curl -LO https://github.com/theos/toolchain/releases/download/linux-arm64/iphone-toolchain.tar.lzma
-          tar -xf iphone-toolchain.tar.lzma -C $HOME/theos/toolchain/linux/iphone --strip-components=1
-          rm iphone-toolchain.tar.lzma
+          git clone --depth=1 https://github.com/theos/toolchain.git $HOME/official_toolchain
           
-          # 3. 创建 SDK 存放目录并拉取 iOS 14.5 SDK
+          # 3. 把里面解压好的 Linux 编译器核心文件强行平移过去
+          cp -r $HOME/official_toolchain/linux/iphone/* $HOME/theos/toolchain/linux/iphone/
+          rm -rf $HOME/official_toolchain
+          
+          # 4. 【100% 你亲测可用】创建 SDK 存放目录并拉取无根 SDK
           mkdir -p $HOME/theos/sdks
           git clone --depth=1 https://github.com/theos/sdks.git $HOME/official_sdks
           cp -r $HOME/official_sdks/iPhoneOS14.5.sdk $HOME/theos/sdks/
