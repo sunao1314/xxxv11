@@ -1,0 +1,8 @@
+Package: com.yourname.universalhijack
+Name: 云端注入管理器 v11.0
+Version: 11.0
+Architecture: iphoneos-arm64-rootless
+Depends: ellekit, preferenceloader
+Maintainer: aosun1314
+Author: aosun1314
+Description: 11.0完全体：基于AltList桥接，完美对齐arm64依赖版。
